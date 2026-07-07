@@ -56,9 +56,15 @@
         .compliance-link:hover {
             color: var(--brand-coral);
         }
+        
+        /* Custom Select Styling */
+        select option {
+            background-color: var(--brand-navy);
+            color: white;
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-[#de6b53] selection:text-white">
+<body class="antialiased selection:bg-[#de6b53] selection:text-white relative">
 
     <div id="canvas-container"></div>
 
@@ -72,26 +78,28 @@
     </nav>
 
     <main>
-        <section class="h-screen flex flex-col justify-center px-8 md:px-24 pt-16">
-            <div class="w-full flex justify-center mb-12 hero-logo opacity-0 transform translate-y-10">
-                <img src="cba-logo.png" alt="CB&A Realtors" class="h-20 md:h-28 object-contain drop-shadow-2xl" />
+        <section class="h-screen flex flex-col px-8 md:px-24 pt-32 pb-10 relative">
+            <div class="-mx-8 md:-mx-24 bg-white py-6 flex justify-center hero-logo opacity-0 transform translate-y-10 shadow-2xl relative z-20">
+                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain drop-shadow-md" />
             </div>
 
-            <h2 class="text-coral text-lg tracking-[0.3em] mb-4 overflow-hidden font-semibold">
-                <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
-            </h2>
-            <h1 class="text-6xl md:text-9xl font-bold tracking-tighter mb-4 overflow-hidden">
-                <span class="block hero-text transform translate-y-full text-white">CARTWRIGHT</span>
-            </h1>
-            <p class="text-2xl md:text-4xl max-w-2xl font-light text-gray-300 overflow-hidden mb-10 italic">
-                <span class="block hero-subtext transform translate-y-full">"Nail it with Cartwright"</span>
-            </p>
-            <div class="hero-btn opacity-0">
-                <a href="#contact" class="inline-block px-8 py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-sm font-bold">CONTACT ME</a>
+            <div class="flex-1 flex flex-col justify-center">
+                <h2 class="text-coral text-lg tracking-[0.3em] mb-4 overflow-hidden font-semibold">
+                    <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
+                </h2>
+                <h1 class="text-6xl md:text-9xl font-bold tracking-tighter mb-4 overflow-hidden">
+                    <span class="block hero-text transform translate-y-full text-white">CARTWRIGHT</span>
+                </h1>
+                <p class="text-2xl md:text-4xl max-w-2xl font-light text-gray-300 overflow-hidden mb-10 italic">
+                    <span class="block hero-subtext transform translate-y-full">"Nail it with Cartwright"</span>
+                </p>
+                <div class="hero-btn opacity-0">
+                    <a href="#contact" class="inline-block px-8 py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-sm font-bold">CONTACT ME</a>
+                </div>
             </div>
         </section>
 
-        <section id="about" class="py-32 px-8 md:px-24 glass-panel mt-20 relative z-10">
+        <section id="about" class="py-32 px-8 md:px-24 glass-panel mt-10 relative z-10">
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                 <div class="aspect-square rounded-full relative overflow-hidden about-img opacity-0 transform translate-y-10 border-4 border-coral p-1 bg-white">
                     <img src="BRIT_CBA.png" alt="Cartwright - REALTOR®" class="w-full h-full object-cover rounded-full">
@@ -132,34 +140,104 @@
         </section>
         
         <footer id="contact" class="bg-[#111a30] pt-20 pb-10 px-8 md:px-24 border-t border-gray-800 relative z-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
-                <div>
-                    <h2 class="text-3xl font-light mb-8">Ready to make a move?</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">EM</span>
-                            <a href="mailto:NailltWithCartwright@yahoo.com" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">NailltWithCartwright@yahoo.com</a>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">PH</span>
-                            <a href="tel:2817254883" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">281-725-4883</a>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">LOC</span>
-                            <span class="text-xl md:text-2xl text-gray-400">Katy, Texas</span>
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
+                
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-4xl font-light mb-8">Ready to make a move?</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-center">
+                                <span class="text-coral text-sm font-bold tracking-widest w-16">EM</span>
+                                <a href="mailto:NailltWithCartwright@yahoo.com" class="text-xl text-white hover:text-coral transition-colors">NailltWithCartwright@yahoo.com</a>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-coral text-sm font-bold tracking-widest w-16">PH</span>
+                                <a href="tel:2817254883" class="text-xl text-white hover:text-coral transition-colors">281-725-4883</a>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-coral text-sm font-bold tracking-widest w-16">LOC</span>
+                                <span class="text-xl text-gray-400">Katy, Texas</span>
+                            </div>
                         </div>
                     </div>
+                    
+                    <div class="text-left text-gray-500 text-sm mt-12 space-y-2">
+                        <p class="text-white font-bold tracking-widest mb-2">CARTWRIGHT</p>
+                        <p>&copy; 2026 Cartwright Real Estate. All Rights Reserved.</p>
+                        <p>Brokerage: CB&A Realtors</p>
+                        <p>Nail it with Cartwright.</p>
+                    </div>
                 </div>
-                <div class="text-left md:text-right text-gray-500 text-sm flex flex-col justify-end space-y-2">
-                    <p class="text-white font-bold tracking-widest mb-2">CARTWRIGHT</p>
-                    <p>&copy; 2026 Cartwright Real Estate. All Rights Reserved.</p>
-                    <p>Brokerage: CB&A Realtors</p>
-                    <p>Nail it with Cartwright.</p>
+
+                <div class="glass-panel p-8 rounded-sm shadow-2xl border-t-2 border-coral">
+                    <form id="contactForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold tracking-widest text-coral mb-2">NAME</label>
+                                <input type="text" required class="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:outline-none focus:border-coral transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold tracking-widest text-coral mb-2">PHONE</label>
+                                <input type="tel" required class="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:outline-none focus:border-coral transition-colors">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest text-coral mb-2">EMAIL</label>
+                            <input type="email" required class="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:outline-none focus:border-coral transition-colors">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest text-coral mb-2">ARE YOU WORKING WITH AN AGENT?</label>
+                            <div class="flex space-x-4 mt-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="hasAgent" value="yes" class="sr-only peer">
+                                    <div class="px-6 py-2 border border-gray-600 text-gray-400 peer-checked:border-coral peer-checked:text-coral transition-all hover:border-gray-400 text-sm tracking-wider uppercase">Yes</div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="hasAgent" value="no" checked class="sr-only peer">
+                                    <div class="px-6 py-2 border border-gray-600 text-gray-400 peer-checked:border-coral peer-checked:text-coral transition-all hover:border-gray-400 text-sm tracking-wider uppercase">No</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold tracking-widest text-coral mb-2">I'M LOOKING TO:</label>
+                                <select id="transactionType" required class="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:outline-none focus:border-coral transition-colors cursor-pointer appearance-none rounded-none">
+                                    <option value="" disabled selected>Select an option...</option>
+                                    <option value="buying">Buy a home</option>
+                                    <option value="selling">Sell a home</option>
+                                </select>
+                            </div>
+
+                            <div id="preapprovedSection" class="hidden opacity-0 transition-opacity duration-300">
+                                <label class="block text-xs font-bold tracking-widest text-coral mb-2">ARE YOU PRE-APPROVED?</label>
+                                <div class="flex space-x-4 mt-2">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="isPreapproved" value="yes" class="sr-only peer">
+                                        <div class="px-6 py-2 border border-gray-600 text-gray-400 peer-checked:border-coral peer-checked:text-coral transition-all hover:border-gray-400 text-sm tracking-wider uppercase">Yes</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="isPreapproved" value="no" class="sr-only peer">
+                                        <div class="px-6 py-2 border border-gray-600 text-gray-400 peer-checked:border-coral peer-checked:text-coral transition-all hover:border-gray-400 text-sm tracking-wider uppercase">No</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold tracking-widest text-coral mb-2">MESSAGE</label>
+                            <textarea required rows="3" class="w-full bg-transparent border-b border-gray-600 py-2 text-white focus:outline-none focus:border-coral transition-colors resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-sm font-bold mt-4">SEND MESSAGE</button>
+                    </form>
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto flex justify-center mb-12 border-t border-gray-800 pt-12">
-                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain opacity-60 hover:opacity-100 transition-opacity duration-300" />
+            <div class="-mx-8 md:-mx-24 bg-white py-8 flex justify-center mb-12 shadow-inner relative z-20">
+                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain hover:scale-105 transition-transform duration-300" />
             </div>
 
             <div class="max-w-7xl mx-auto border-t border-gray-700 pt-8 text-xs text-gray-400 font-light flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -180,6 +258,28 @@
     </main>
 
     <script>
+        // Form Logic
+        const initFormLogic = () => {
+            const transactionSelect = document.getElementById('transactionType');
+            const preapprovedSection = document.getElementById('preapprovedSection');
+
+            transactionSelect.addEventListener('change', function() {
+                if (this.value === 'buying') {
+                    preapprovedSection.classList.remove('hidden');
+                    // Small delay to allow display:block to apply before fading in
+                    setTimeout(() => preapprovedSection.classList.remove('opacity-0'), 10);
+                } else {
+                    preapprovedSection.classList.add('opacity-0');
+                    setTimeout(() => preapprovedSection.classList.add('hidden'), 300);
+                }
+            });
+
+            document.getElementById('contactForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Inquiry form submitted successfully!');
+            });
+        };
+
         const initThreeJS = () => {
             const container = document.getElementById('canvas-container');
             const scene = new THREE.Scene();
@@ -335,6 +435,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
             initGSAP();
+            initFormLogic();
         });
     </script>
 </body>
