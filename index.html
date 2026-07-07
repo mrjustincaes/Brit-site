@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartwright - Texas Real Estate Professional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --brand-navy: #1b2a49;
+            --brand-coral: #de6b53;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--brand-navy);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+        .glass-panel {
+            background: rgba(27, 42, 73, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .text-coral {
+            color: var(--brand-coral);
+        }
+        .border-coral {
+            border-color: var(--brand-coral);
+        }
+        .bg-coral {
+            background-color: var(--brand-coral);
+        }
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .realtor-image-placeholder {
+            background-image: linear-gradient(135deg, #1b2a49 0%, #2a3f6a 100%);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#de6b53] selection:text-white">
+
+    <div id="canvas-container"></div>
+
+    <nav class="fixed w-full z-50 glass-panel border-b-0 py-6 px-8 flex justify-between items-center transition-all duration-300">
+        <div class="text-2xl font-bold tracking-widest text-white nav-item">CARTWRIGHT</div>
+        <div class="space-x-8 text-sm tracking-widest nav-item hidden md:block">
+            <a href="#about" class="hover:text-[#de6b53] transition-colors">ABOUT</a>
+            <a href="#broker" class="hover:text-[#de6b53] transition-colors">CB&A REALTORS</a>
+            <a href="#contact" class="hover:text-[#de6b53] transition-colors">CONTACT</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="h-screen flex flex-col justify-center px-8 md:px-24">
+            <h2 class="text-coral text-lg tracking-[0.3em] mb-4 overflow-hidden font-semibold">
+                <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
+            </h2>
+            <h1 class="text-6xl md:text-9xl font-bold tracking-tighter mb-4 overflow-hidden">
+                <span class="block hero-text transform translate-y-full text-white">CARTWRIGHT</span>
+            </h1>
+            <p class="text-2xl md:text-4xl max-w-2xl font-light text-gray-300 overflow-hidden mb-10 italic">
+                <span class="block hero-subtext transform translate-y-full">"Nail it with Cartwright"</span>
+            </p>
+            <div class="hero-btn opacity-0">
+                <a href="#contact" class="inline-block px-8 py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-sm font-bold">CONTACT ME</a>
+            </div>
+        </section>
+
+        <section id="about" class="py-32 px-8 md:px-24 glass-panel mt-20 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="aspect-square rounded-full relative overflow-hidden about-img opacity-0 transform translate-y-10 border-4 border-coral p-2">
+                    <div class="w-full h-full rounded-full realtor-image-placeholder flex items-center justify-center text-gray-400 font-light tracking-widest text-center px-4">
+                        [ REALTOR PORTRAIT ]<br>Replace with image from business card
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-coral text-sm tracking-widest mb-4 section-title opacity-0 font-bold">REALTOR®</h2>
+                    <h3 class="text-4xl md:text-5xl mb-8 font-light section-heading opacity-0">Dedicated to the Katy and Houston Markets</h3>
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light section-text opacity-0">
+                        As a specialized Texas Real Estate Professional, I provide strategic, client-focused services tailored to the unique dynamics of the Katy and greater Houston area markets. 
+                    </p>
+                    <p class="text-gray-300 leading-relaxed font-light section-text opacity-0">
+                        Whether you are navigating buying, selling, or investing, my goal is to ensure you achieve optimal results. When it comes to real estate, you need someone who knows how to close. Nail it with Cartwright.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="broker" class="py-32 px-8 md:px-24 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-coral text-sm tracking-widest mb-4 broker-el opacity-0 font-bold">BROKERAGE</h2>
+                <h3 class="text-5xl font-bold mb-8 broker-el opacity-0 tracking-widest">CB<span class="text-coral">&</span>A REALTORS</h3>
+                <div class="glass-panel p-12 rounded-sm border-t-2 border-coral broker-el opacity-0 shadow-2xl">
+                    <p class="text-gray-300 leading-relaxed font-light mb-4 text-center text-lg">
+                        Backed by the extensive resources and market presence of CB&A Realtors, delivering uncompromising standard of service and real estate excellence.
+                    </p>
+                    <div class="flex justify-center items-center mt-12 border-t border-gray-700 pt-8">
+                        <div class="text-center px-8 border-r border-gray-700">
+                            <span class="text-coral block mb-2 font-bold tracking-widest text-xs">LOCATION</span>
+                            <span class="text-xl">Katy, Texas</span>
+                        </div>
+                        <div class="text-center px-8">
+                            <span class="text-coral block mb-2 font-bold tracking-widest text-xs">CREDENTIALS</span>
+                            <span class="text-xl">REALTOR®</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer id="contact" class="bg-[#111a30] py-20 px-8 md:px-24 border-t border-gray-800 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="text-3xl font-light mb-8">Ready to make a move?</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <span class="text-coral text-sm font-bold tracking-widest w-16">EM</span>
+                            <a href="mailto:NailltWithCartwright@yahoo.com" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">NailltWithCartwright@yahoo.com</a>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-coral text-sm font-bold tracking-widest w-16">PH</span>
+                            <a href="tel:2817254883" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">281-725-4883</a>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-coral text-sm font-bold tracking-widest w-16">LOC</span>
+                            <span class="text-xl md:text-2xl text-gray-400">Katy, Texas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-left md:text-right text-gray-500 text-sm flex flex-col justify-end">
+                    <p class="mb-2 text-white font-bold tracking-widest">CARTWRIGHT</p>
+                    <p class="mb-2">&copy; 2026 CB&A Realtors. All Rights Reserved.</p>
+                    <p>Nail it with Cartwright.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const initThreeJS = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2000;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorsArray = new Float32Array(particlesCount * 3);
+
+            const colorCoral = new THREE.Color('#de6b53');
+            const colorWhite = new THREE.Color('#ffffff');
+
+            for(let i = 0; i < particlesCount * 3; i+=3) {
+                posArray[i] = (Math.random() - 0.5) * 15;
+                posArray[i+1] = (Math.random() - 0.5) * 15;
+                posArray[i+2] = (Math.random() - 0.5) * 15;
+
+                const mixedColor = Math.random() > 0.5 ? colorCoral : colorWhite;
+                colorsArray[i] = mixedColor.r;
+                colorsArray[i+1] = mixedColor.g;
+                colorsArray[i+2] = mixedColor.b;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 0.015,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, material);
+            scene.add(particlesMesh);
+
+            camera.position.z = 3;
+
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                particlesMesh.rotation.y += 0.0005;
+                particlesMesh.rotation.x += 0.0002;
+                
+                particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+                particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+                
+                const positions = particlesMesh.geometry.attributes.position.array;
+                for(let i = 1; i < particlesCount * 3; i+=3) {
+                    positions[i] += Math.sin(elapsedTime + positions[i-1]) * 0.001;
+                }
+                particlesMesh.geometry.attributes.position.needsUpdate = true;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        const initGSAP = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const tl = gsap.timeline();
+            
+            tl.fromTo('.nav-item', 
+                { y: -50, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }
+            )
+            .to('.hero-text', 
+                { y: 0, duration: 1.2, stagger: 0.15, ease: "power4.out" },
+                "-=0.5"
+            )
+            .to('.hero-subtext', 
+                { y: 0, duration: 1, ease: "power3.out" },
+                "-=0.8"
+            )
+            .to('.hero-btn', 
+                { opacity: 1, duration: 1, ease: "power2.out" },
+                "-=0.4"
+            );
+
+            gsap.to('.about-img', {
+                scrollTrigger: {
+                    trigger: '#about',
+                    start: 'top 75%'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 1.5,
+                ease: "power3.out"
+            });
+
+            gsap.to('.section-title, .section-heading, .section-text', {
+                scrollTrigger: {
+                    trigger: '#about',
+                    start: 'top 70%'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+
+            gsap.to('.broker-el', {
+                scrollTrigger: {
+                    trigger: '#broker',
+                    start: 'top 80%'
+                },
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            initGSAP();
+        });
+    </script>
+</body>
+</html>
