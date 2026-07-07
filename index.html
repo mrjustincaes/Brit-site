@@ -72,7 +72,11 @@
     </nav>
 
     <main>
-        <section class="h-screen flex flex-col justify-center px-8 md:px-24">
+        <section class="h-screen flex flex-col justify-center px-8 md:px-24 pt-16">
+            <div class="w-full flex justify-center mb-12 hero-logo opacity-0 transform translate-y-10">
+                <img src="cba-logo.png" alt="CB&A Realtors" class="h-20 md:h-28 object-contain drop-shadow-2xl" />
+            </div>
+
             <h2 class="text-coral text-lg tracking-[0.3em] mb-4 overflow-hidden font-semibold">
                 <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
             </h2>
@@ -154,7 +158,10 @@
                 </div>
             </div>
 
-            <!-- TREC & Association Compliance Section -->
+            <div class="max-w-7xl mx-auto flex justify-center mb-12 border-t border-gray-800 pt-12">
+                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain opacity-60 hover:opacity-100 transition-opacity duration-300" />
+            </div>
+
             <div class="max-w-7xl mx-auto border-t border-gray-700 pt-8 text-xs text-gray-400 font-light flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div class="flex flex-col space-y-2">
                     <p>Texas law requires all real estate license holders to give the following information about brokerage services to prospective buyers, tenants, sellers and landlords:</p>
@@ -272,9 +279,13 @@
                 { y: -50, opacity: 0 }, 
                 { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }
             )
+            .to('.hero-logo', 
+                { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" },
+                "-=0.5"
+            )
             .to('.hero-text', 
                 { y: 0, duration: 1.2, stagger: 0.15, ease: "power4.out" },
-                "-=0.5"
+                "-=0.8"
             )
             .to('.hero-subtext', 
                 { y: 0, duration: 1, ease: "power3.out" },
