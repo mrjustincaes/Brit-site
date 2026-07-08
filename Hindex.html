@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cartwright - Texas Real Estate Professional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -13,6 +13,7 @@
             --brand-navy: #1b2a49;
             --brand-coral: #de6b53;
         }
+        
         body, html {
             margin: 0;
             padding: 0;
@@ -23,6 +24,17 @@
             color: #ffffff;
             overflow-x: hidden;
         }
+
+        /* Custom House Cursor Engine - Desktop Only */
+        @media (pointer: fine) {
+            body, html {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") 12 12, auto;
+            }
+            a, button, select, input, textarea, label.cursor-pointer {
+                cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23de6b53' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3Cpolyline points='9 22 9 12 15 12 15 22'/%3E%3C/svg%3E") 12 12, pointer !important;
+            }
+        }
+
         #canvas-container {
             position: fixed;
             top: 0;
@@ -34,6 +46,7 @@
         .glass-panel {
             background: rgba(27, 42, 73, 0.7);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .text-coral {
@@ -56,132 +69,424 @@
         .compliance-link:hover {
             color: var(--brand-coral);
         }
+        
+        /* Custom Select Styling */
+        select option {
+            background-color: var(--brand-navy);
+            color: white;
+        }
+
+        /* 3D Container */
+        #main-container {
+            perspective: 2000px;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+        
+        #front-side, #back-side {
+            width: 100%;
+            transform-origin: center center;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[#de6b53] selection:text-white relative">
 
     <div id="canvas-container"></div>
 
-    <nav class="fixed w-full z-50 glass-panel border-b-0 py-6 px-8 flex justify-between items-center transition-all duration-300">
-        <div class="text-2xl font-bold tracking-widest text-white nav-item">CARTWRIGHT</div>
-        <div class="space-x-8 text-sm tracking-widest nav-item hidden md:block">
-            <a href="#about" class="hover:text-[#de6b53] transition-colors">ABOUT</a>
-            <a href="#broker" class="hover:text-[#de6b53] transition-colors">CB&A REALTORS</a>
-            <a href="#contact" class="hover:text-[#de6b53] transition-colors">CONTACT</a>
+    <!-- Paper Plane Animation Container (Hidden by default) -->
+    <div id="success-animation" class="fixed inset-0 pointer-events-none flex items-center justify-center z-[100] hidden overflow-hidden">
+        <svg id="paper-plane" xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 md:h-32 md:w-32 text-coral drop-shadow-2xl" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <path d="M2 12L22 2L15 22L11 13L2 12ZM11 13L22 2"></path>
+        </svg>
+    </div>
+
+    <nav class="fixed w-full z-50 glass-panel border-b-0 py-5 px-6 md:px-8 flex justify-between items-center transition-all duration-300">
+        <div class="text-xl md:text-2xl font-bold tracking-widest text-white nav-item">CARTWRIGHT</div>
+        <div class="flex items-center space-x-6 text-xs md:text-sm tracking-widest nav-item">
+            <a href="#about" class="front-nav hidden md:inline-block hover:text-[#de6b53] transition-colors">ABOUT</a>
+            <a href="#broker" class="front-nav hidden md:inline-block hover:text-[#de6b53] transition-colors">CB&A REALTORS</a>
+            <button id="nav-contact-btn" class="hover:text-[#de6b53] transition-colors font-bold uppercase tracking-widest bg-white/10 md:bg-transparent px-4 py-2 md:p-0 rounded-sm md:rounded-none">CONTACT</button>
         </div>
     </nav>
 
-    <main>
-        <section class="h-screen flex flex-col px-8 md:px-24 pt-32 pb-10 relative">
-            <div class="-mx-8 md:-mx-24 bg-white py-6 flex justify-center hero-logo opacity-0 transform translate-y-10 shadow-2xl relative z-20">
-                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain drop-shadow-md" />
-            </div>
-
-            <div class="flex-1 flex flex-col justify-center">
-                <h2 class="text-coral text-lg tracking-[0.3em] mb-4 overflow-hidden font-semibold">
-                    <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
-                </h2>
-                <h1 class="text-6xl md:text-9xl font-bold tracking-tighter mb-4 overflow-hidden">
-                    <span class="block hero-text transform translate-y-full text-white">CARTWRIGHT</span>
-                </h1>
-                <p class="text-2xl md:text-4xl max-w-2xl font-light text-gray-300 overflow-hidden mb-10 italic">
-                    <span class="block hero-subtext transform translate-y-full">"Nail it with Cartwright"</span>
-                </p>
-                <div class="hero-btn opacity-0">
-                    <a href="#contact" class="inline-block px-8 py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-sm font-bold">CONTACT ME</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="py-32 px-8 md:px-24 glass-panel mt-10 relative z-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-                <div class="aspect-square rounded-full relative overflow-hidden about-img opacity-0 transform translate-y-10 border-4 border-coral p-1 bg-white">
-                    <img src="BRIT_CBA.png" alt="Cartwright - REALTOR®" class="w-full h-full object-cover rounded-full">
-                </div>
-                <div>
-                    <h2 class="text-coral text-sm tracking-widest mb-4 section-title opacity-0 font-bold">REALTOR®</h2>
-                    <h3 class="text-4xl md:text-5xl mb-8 font-light section-heading opacity-0">Dedicated to the Katy and Houston Markets</h3>
-                    <p class="text-gray-300 leading-relaxed mb-6 font-light section-text opacity-0">
-                        As a specialized Texas Real Estate Professional, I provide strategic, client-focused services tailored to the unique dynamics of the Katy and greater Houston area markets. 
-                    </p>
-                    <p class="text-gray-300 leading-relaxed font-light section-text opacity-0">
-                        Whether you are navigating buying, selling, or investing, my goal is to ensure you achieve optimal results. When it comes to real estate, you need someone who knows how to close. Nail it with Cartwright.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="broker" class="py-32 px-8 md:px-24 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-coral text-sm tracking-widest mb-4 broker-el opacity-0 font-bold">BROKERAGE</h2>
-                <h3 class="text-5xl font-bold mb-8 broker-el opacity-0 tracking-widest">CB<span class="text-coral">&</span>A REALTORS</h3>
-                <div class="glass-panel p-12 rounded-sm border-t-2 border-coral broker-el opacity-0 shadow-2xl">
-                    <p class="text-gray-300 leading-relaxed font-light mb-4 text-center text-lg">
-                        At CB&A, Realtors, we empower our agents to exceed client expectations. Recognized as one of Houston’s top workplaces and most innovative real estate brokerages, we provide the cutting-edge technology, comprehensive market data, and robust support systems required to navigate today's competitive landscape.
-                    </p>
-                    <div class="flex justify-center items-center mt-12 border-t border-gray-700 pt-8">
-                        <div class="text-center px-8 border-r border-gray-700">
-                            <span class="text-coral block mb-2 font-bold tracking-widest text-xs">LOCATION</span>
-                            <span class="text-xl">Katy, Texas</span>
-                        </div>
-                        <div class="text-center px-8">
-                            <span class="text-coral block mb-2 font-bold tracking-widest text-xs">CREDENTIALS</span>
-                            <span class="text-xl">REALTOR®</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <main id="main-container">
         
-        <footer id="contact" class="bg-[#111a30] pt-20 pb-10 px-8 md:px-24 border-t border-gray-800 relative z-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 mb-16">
-                <div>
-                    <h2 class="text-3xl font-light mb-8">Ready to make a move?</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">EM</span>
-                            <a href="mailto:NailltWithCartwright@yahoo.com" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">NailltWithCartwright@yahoo.com</a>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">PH</span>
-                            <a href="tel:2817254883" class="text-xl md:text-2xl text-white hover:text-coral transition-colors">281-725-4883</a>
-                        </div>
-                        <div class="flex items-center">
-                            <span class="text-coral text-sm font-bold tracking-widest w-16">LOC</span>
-                            <span class="text-xl md:text-2xl text-gray-400">Katy, Texas</span>
+        <!-- ======================= -->
+        <!-- FRONT OF THE PAPER -->
+        <!-- ======================= -->
+        <div id="front-side">
+            <section class="min-h-[100dvh] flex flex-col px-6 md:px-24 pt-32 pb-10 relative">
+                <!-- Full-Bleed White Banner for Top Logo -->
+                <div class="-mx-6 md:-mx-24 bg-white py-4 md:py-6 flex justify-center hero-logo opacity-0 transform translate-y-10 shadow-2xl relative z-20">
+                    <img src="cba-logo.png" alt="CB&A Realtors" class="h-12 md:h-20 object-contain drop-shadow-md" />
+                </div>
+
+                <!-- Vertically Centered Text Content -->
+                <div class="flex-1 flex flex-col justify-center">
+                    <h2 class="text-coral text-xs sm:text-sm md:text-lg tracking-[0.2em] md:tracking-[0.3em] mb-4 overflow-hidden font-semibold">
+                        <span class="block hero-text transform translate-y-full">TEXAS REAL ESTATE PROFESSIONAL</span>
+                    </h2>
+                    <h1 class="text-[12vw] md:text-9xl font-bold tracking-tighter mb-4 overflow-hidden leading-none">
+                        <span class="block hero-text transform translate-y-full text-white">CARTWRIGHT</span>
+                    </h1>
+                    <p class="text-xl md:text-4xl max-w-2xl font-light text-gray-300 overflow-hidden mb-10 italic">
+                        <span class="block hero-subtext transform translate-y-full">"Nail it with Cartwright"</span>
+                    </p>
+                    <div class="hero-btn opacity-0">
+                        <button id="hero-contact-btn" class="inline-block px-8 py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-xs md:text-sm font-bold uppercase w-full sm:w-auto">CONTACT ME</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="py-24 md:py-32 px-6 md:px-24 glass-panel mt-10 relative z-10">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                    <div class="aspect-square rounded-full relative overflow-hidden about-img opacity-0 transform translate-y-10 border-4 border-coral p-1 bg-white mx-auto max-w-sm md:max-w-none">
+                        <img src="BRIT_CBA.png" alt="Cartwright - REALTOR®" class="w-full h-full object-cover rounded-full">
+                    </div>
+                    <div>
+                        <h2 class="text-coral text-xs md:text-sm tracking-widest mb-4 section-title opacity-0 font-bold">REALTOR®</h2>
+                        <h3 class="text-3xl md:text-5xl mb-8 font-light section-heading opacity-0 leading-tight">Dedicated to the Katy and Houston Markets</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6 font-light section-text opacity-0">
+                            As a specialized Texas Real Estate Professional, I provide strategic, client-focused services tailored to the unique dynamics of the Katy and greater Houston area markets. 
+                        </p>
+                        <p class="text-gray-300 leading-relaxed font-light section-text opacity-0">
+                            Whether you are navigating buying, selling, or investing, my goal is to ensure you achieve optimal results. When it comes to real estate, you need someone who knows how to close. Nail it with Cartwright.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="broker" class="py-24 md:py-32 px-6 md:px-24 relative z-10 mb-20">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-coral text-xs md:text-sm tracking-widest mb-4 broker-el opacity-0 font-bold">BROKERAGE</h2>
+                    <h3 class="text-4xl md:text-5xl font-bold mb-8 broker-el opacity-0 tracking-widest">CB<span class="text-coral">&</span>A REALTORS</h3>
+                    <div class="glass-panel p-8 md:p-12 rounded-sm border-t-2 border-coral broker-el opacity-0 shadow-2xl">
+                        <p class="text-gray-300 leading-relaxed font-light mb-6 md:mb-4 text-center text-base md:text-lg">
+                            At CB&A, Realtors, we empower our agents to exceed client expectations. Recognized as one of Houston’s top workplaces and most innovative real estate brokerages, we provide the cutting-edge technology, comprehensive market data, and robust support systems required to navigate today's competitive landscape.
+                        </p>
+                        <div class="flex flex-col sm:flex-row justify-center items-center mt-8 md:mt-12 border-t border-gray-700 pt-8 gap-8 sm:gap-0">
+                            <div class="text-center px-8 sm:border-r border-gray-700 w-full sm:w-auto">
+                                <span class="text-coral block mb-2 font-bold tracking-widest text-[10px] md:text-xs">LOCATION</span>
+                                <span class="text-lg md:text-xl">Katy, Texas</span>
+                            </div>
+                            <div class="text-center px-8 w-full sm:w-auto">
+                                <span class="text-coral block mb-2 font-bold tracking-widest text-[10px] md:text-xs">CREDENTIALS</span>
+                                <span class="text-lg md:text-xl">REALTOR®</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="text-left md:text-right text-gray-500 text-sm flex flex-col justify-end space-y-2">
-                    <p class="text-white font-bold tracking-widest mb-2">CARTWRIGHT</p>
-                    <p>&copy; 2026 Cartwright Real Estate. All Rights Reserved.</p>
-                    <p>Brokerage: CB&A Realtors</p>
-                    <p>Nail it with Cartwright.</p>
-                </div>
-            </div>
+            </section>
 
-            <div class="-mx-8 md:-mx-24 bg-white py-8 flex justify-center mb-12 shadow-inner relative z-20">
-                <img src="cba-logo.png" alt="CB&A Realtors" class="h-16 md:h-20 object-contain hover:scale-105 transition-transform duration-300" />
-            </div>
-
-            <div class="max-w-7xl mx-auto border-t border-gray-700 pt-8 text-xs text-gray-400 font-light flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div class="flex flex-col space-y-2">
-                    <p>Texas law requires all real estate license holders to give the following information about brokerage services to prospective buyers, tenants, sellers and landlords:</p>
-                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
-                        <a href="#" class="compliance-link">Texas Real Estate Commission Information About Brokerage Services (IABS)</a>
-                        <span class="hidden sm:inline">|</span>
-                        <a href="#" class="compliance-link">Texas Real Estate Commission Consumer Protection Notice</a>
+            <!-- Front Side Compliance Footer -->
+            <footer class="bg-[#0b111e] pt-12 pb-10 px-6 md:px-24 border-t border-gray-800">
+                <div class="max-w-7xl mx-auto text-[10px] md:text-xs text-gray-400 font-light flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="flex flex-col space-y-3 md:space-y-2">
+                        <p>Texas law requires all real estate license holders to give the following information about brokerage services to prospective buyers, tenants, sellers and landlords:</p>
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                            <a href="#" class="compliance-link">Texas Real Estate Commission Information About Brokerage Services (IABS)</a>
+                            <span class="hidden sm:inline">|</span>
+                            <a href="#" class="compliance-link">Texas Real Estate Commission Consumer Protection Notice</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:text-right space-y-2 shrink-0">
+                        <p class="uppercase tracking-wider font-bold text-gray-300">Equal Housing Opportunity</p>
+                        <p>Member of NAR, Texas REALTORS®, and HAR.</p>
                     </div>
                 </div>
-                <div class="flex flex-col md:text-right space-y-2 shrink-0">
-                    <p class="uppercase tracking-wider font-bold">Equal Housing Opportunity</p>
-                    <p>Member of NAR, Texas REALTORS®, and HAR.</p>
+            </footer>
+        </div>
+
+        <!-- ======================= -->
+        <!-- BACK OF THE PAPER -->
+        <!-- ======================= -->
+        <div id="back-side" style="display: none;" class="flex flex-col min-h-[100dvh]">
+            <section id="contact" class="flex-grow pt-32 pb-16 px-6 md:px-24 bg-[rgba(17,26,48,0.7)] relative z-10 flex flex-col justify-center">
+                <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    
+                    <!-- Left Column: Contact Info -->
+                    <div class="flex flex-col justify-center h-full">
+                        <div>
+                            <h2 class="text-4xl md:text-5xl font-light mb-8 md:mb-10 drop-shadow-lg">Ready to make<br/>a move?</h2>
+                            <div class="space-y-6 glass-panel p-6 md:p-8 rounded-sm shadow-xl">
+                                <div class="flex items-center">
+                                    <span class="text-coral text-xs md:text-sm font-bold tracking-widest w-12 md:w-16">EM</span>
+                                    <a href="mailto:sold@nailitwithcartwright.com" class="text-base sm:text-lg md:text-xl text-white hover:text-coral transition-colors break-all">sold@nailitwithcartwright.com</a>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-coral text-xs md:text-sm font-bold tracking-widest w-12 md:w-16">PH</span>
+                                    <a href="tel:2817254883" class="text-base sm:text-lg md:text-xl text-white hover:text-coral transition-colors">281-725-4883</a>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-coral text-xs md:text-sm font-bold tracking-widest w-12 md:w-16">LOC</span>
+                                    <span class="text-base sm:text-lg md:text-xl text-gray-400">Katy, Texas</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Inquiry Form -->
+                    <div class="glass-panel p-6 md:p-8 rounded-sm shadow-2xl border-t-4 border-coral w-full max-w-2xl mx-auto lg:max-w-none">
+                        <form id="contactForm" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Name -->
+                                <div>
+                                    <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">NAME</label>
+                                    <input type="text" name="name" id="contactName" required class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors">
+                                </div>
+                                <!-- Phone -->
+                                <div>
+                                    <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">PHONE</label>
+                                    <input type="tel" name="phone" id="contactPhone" required class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors">
+                                </div>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">EMAIL</label>
+                                <input type="email" name="email" id="contactEmail" required class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors">
+                            </div>
+
+                            <!-- Working with Agent? -->
+                            <div>
+                                <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">ARE YOU CURRENTLY WORKING WITH AN AGENT?</label>
+                                <div class="flex space-x-3 mt-2">
+                                    <label class="cursor-pointer flex-1 text-center">
+                                        <input type="radio" name="hasAgent" value="yes" class="sr-only peer">
+                                        <div class="px-4 py-3 md:py-2 border border-gray-600 text-gray-400 peer-checked:bg-[#de6b53] peer-checked:text-white peer-checked:border-[#de6b53] transition-all hover:border-gray-400 text-xs md:text-sm tracking-wider uppercase font-bold">Yes</div>
+                                    </label>
+                                    <label class="cursor-pointer flex-1 text-center">
+                                        <input type="radio" name="hasAgent" value="no" checked class="sr-only peer">
+                                        <div class="px-4 py-3 md:py-2 border border-gray-600 text-gray-400 peer-checked:bg-[#de6b53] peer-checked:text-white peer-checked:border-[#de6b53] transition-all hover:border-gray-400 text-xs md:text-sm tracking-wider uppercase font-bold">No</div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Buying or Selling -->
+                                <div>
+                                    <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">I'M LOOKING TO:</label>
+                                    <select name="transactionType" id="transactionType" required class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors cursor-pointer appearance-none rounded-none">
+                                        <option value="" disabled selected>Select an option...</option>
+                                        <option value="buying">Buy a home</option>
+                                        <option value="selling">Sell a home</option>
+                                    </select>
+                                </div>
+
+                                <!-- Pre-approved? -->
+                                <div>
+                                    <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">ARE YOU PRE-APPROVED?</label>
+                                    <select name="preapproved" id="isPreapproved" required class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors cursor-pointer appearance-none rounded-none">
+                                        <option value="" disabled selected>Select an option...</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Message -->
+                            <div>
+                                <label class="block text-[10px] md:text-xs font-bold tracking-widest text-coral mb-2">MESSAGE</label>
+                                <textarea name="message" id="contactMessage" required rows="3" class="w-full bg-transparent border-b border-gray-600 py-2 text-base text-white focus:outline-none focus:border-coral transition-colors resize-none"></textarea>
+                            </div>
+                            
+                            <!-- FormSubmit Config (Hidden) -->
+                            <input type="hidden" name="_subject" value="New Inquiry - Cartwright Website!">
+                            <input type="hidden" name="_captcha" value="false">
+
+                            <button type="submit" id="submitBtn" class="w-full py-4 border border-coral text-coral hover:bg-[#de6b53] hover:text-white transition-all duration-300 tracking-widest text-xs md:text-sm font-bold mt-2">SEND MESSAGE</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </section>
+
+            <!-- Back Side Compliance Footer -->
+            <footer class="bg-[#0b111e] pt-12 pb-10 px-6 md:px-24 relative z-20 shrink-0">
+                <!-- Full-Bleed White Banner for Footer Logo -->
+                <div class="-mx-6 md:-mx-24 bg-white py-6 md:py-8 flex justify-center mb-12 shadow-inner">
+                    <img src="cba-logo.png" alt="CB&A Realtors" class="h-12 md:h-20 object-contain hover:scale-105 transition-transform duration-300" />
+                </div>
+
+                <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 md:gap-8 mb-12 border-b border-gray-800 pb-8">
+                    <div class="text-center lg:text-left text-gray-500 text-xs md:text-sm space-y-2">
+                        <p class="text-white font-bold tracking-widest mb-2">CARTWRIGHT</p>
+                        <p>&copy; 2026 Cartwright Real Estate. All Rights Reserved.</p>
+                    </div>
+                    <div class="text-center lg:text-right text-gray-500 text-xs md:text-sm space-y-2">
+                        <p>Brokerage: CB&A Realtors</p>
+                        <p>Nail it with Cartwright.</p>
+                    </div>
+                </div>
+
+                <div class="max-w-7xl mx-auto text-[10px] md:text-xs text-gray-400 font-light flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="flex flex-col space-y-3 md:space-y-2">
+                        <p>Texas law requires all real estate license holders to give the following information about brokerage services to prospective buyers, tenants, sellers and landlords:</p>
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+                            <a href="#" class="compliance-link">Texas Real Estate Commission Information About Brokerage Services (IABS)</a>
+                            <span class="hidden sm:inline">|</span>
+                            <a href="#" class="compliance-link">Texas Real Estate Commission Consumer Protection Notice</a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:text-right space-y-2 shrink-0">
+                        <p class="uppercase tracking-wider font-bold text-gray-300">Equal Housing Opportunity</p>
+                        <p>Member of NAR, Texas REALTORS®, and HAR.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </main>
 
     <script>
+        // 3D Flip Mechanics & Navigation Control using GSAP
+        const initFlipLogic = () => {
+            const navBtn = document.getElementById('nav-contact-btn');
+            const heroBtn = document.getElementById('hero-contact-btn');
+            const frontNavs = document.querySelectorAll('.front-nav');
+            const frontSide = document.getElementById('front-side');
+            const backSide = document.getElementById('back-side');
+            
+            let isFlipped = false;
+
+            const performFlip = (e) => {
+                e.preventDefault();
+                
+                const delay = window.scrollY > 100 ? 500 : 50; 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                setTimeout(() => {
+                    if (!isFlipped) {
+                        // Animate Front Side Away
+                        gsap.to(frontSide, {
+                            rotationY: 90, 
+                            duration: 0.5, 
+                            ease: "power2.in",
+                            onComplete: () => {
+                                // Instantly swap visibility
+                                frontSide.style.display = 'none';
+                                backSide.style.display = 'flex';
+                                
+                                // Update Nav
+                                navBtn.innerText = 'HOME';
+                                frontNavs.forEach(nav => nav.classList.add('hidden'));
+                                
+                                // Animate Back Side In
+                                gsap.fromTo(backSide, 
+                                    { rotationY: -90 },
+                                    { rotationY: 0, duration: 0.5, ease: "power2.out" }
+                                );
+                            }
+                        });
+                    } else {
+                        // Animate Back Side Away
+                        gsap.to(backSide, {
+                            rotationY: -90, 
+                            duration: 0.5, 
+                            ease: "power2.in",
+                            onComplete: () => {
+                                // Instantly swap visibility
+                                backSide.style.display = 'none';
+                                frontSide.style.display = 'block';
+                                
+                                // Update Nav
+                                navBtn.innerText = 'CONTACT';
+                                frontNavs.forEach(nav => {
+                                    nav.classList.remove('hidden');
+                                    nav.classList.add('md:inline-block');
+                                });
+                                
+                                // Animate Front Side In
+                                gsap.fromTo(frontSide, 
+                                    { rotationY: 90 },
+                                    { rotationY: 0, duration: 0.5, ease: "power2.out" }
+                                );
+                            }
+                        });
+                    }
+                    isFlipped = !isFlipped;
+                }, delay);
+            };
+
+            navBtn.addEventListener('click', performFlip);
+            heroBtn.addEventListener('click', performFlip);
+        };
+
+        // Live Email Submission using FormSubmit AJAX
+        const initFormLogic = () => {
+            const form = document.getElementById('contactForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const animationContainer = document.getElementById('success-animation');
+            const paperPlane = document.getElementById('paper-plane');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // 1. Change button to loading state
+                const originalText = submitBtn.innerText;
+                submitBtn.innerText = 'SENDING...';
+                submitBtn.disabled = true;
+
+                // 2. Gather Data for FormSubmit
+                const formData = {
+                    name: document.getElementById('contactName').value,
+                    phone: document.getElementById('contactPhone').value,
+                    email: document.getElementById('contactEmail').value,
+                    agent_status: document.querySelector('input[name="hasAgent"]:checked').value,
+                    transaction_type: document.getElementById('transactionType').value,
+                    preapproved: document.getElementById('isPreapproved').value,
+                    message: document.getElementById('contactMessage').value,
+                    _subject: document.querySelector('input[name="_subject"]').value,
+                    _captcha: "false"
+                };
+
+                // 3. Send POST Request to FormSubmit
+                fetch('https://formsubmit.co/ajax/sold@nailitwithcartwright.com', {
+                    method: "POST",
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Trigger Plane Animation on Success
+                    animationContainer.classList.remove('hidden');
+                    
+                    const w = window.innerWidth;
+                    const h = window.innerHeight;
+
+                    gsap.fromTo(paperPlane, 
+                        { x: -w/2 - 100, y: h/2 + 100, rotation: -45, scale: 0.5, opacity: 0 },
+                        { x: w/2 + 100, y: -h/2 - 100, rotation: 15, scale: 2, opacity: 1, duration: 1.5, ease: "power2.inOut",
+                            onComplete: () => {
+                                animationContainer.classList.add('hidden');
+                                
+                                submitBtn.innerText = 'MESSAGE SENT!';
+                                submitBtn.classList.add('bg-[#de6b53]', 'text-white');
+                                form.reset();
+
+                                setTimeout(() => {
+                                    submitBtn.innerText = originalText;
+                                    submitBtn.classList.remove('bg-[#de6b53]', 'text-white');
+                                    submitBtn.disabled = false;
+                                }, 4000);
+                            }
+                        }
+                    );
+                })
+                .catch(error => {
+                    console.error("Error sending email:", error);
+                    submitBtn.innerText = 'ERROR. PLEASE TRY AGAIN.';
+                    setTimeout(() => {
+                        submitBtn.innerText = originalText;
+                        submitBtn.disabled = false;
+                    }, 4000);
+                });
+            });
+        };
+
         const initThreeJS = () => {
             const container = document.getElementById('canvas-container');
             const scene = new THREE.Scene();
@@ -189,11 +494,12 @@
             const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            // Limit pixel ratio on mobile to save battery and boost performance
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 2000;
+            const particlesCount = window.innerWidth < 768 ? 1000 : 2000; // Less particles on mobile
             const posArray = new Float32Array(particlesCount * 3);
             const colorsArray = new Float32Array(particlesCount * 3);
 
@@ -238,6 +544,14 @@
                 mouseX = (event.clientX - windowHalfX);
                 mouseY = (event.clientY - windowHalfY);
             });
+
+            // Adjust targets on touch devices gently to keep animation alive
+            document.addEventListener('touchmove', (event) => {
+                if(event.touches.length > 0) {
+                    mouseX = (event.touches[0].clientX - windowHalfX);
+                    mouseY = (event.touches[0].clientY - windowHalfY);
+                }
+            }, { passive: true });
 
             const clock = new THREE.Clock();
 
@@ -337,6 +651,8 @@
         window.addEventListener('DOMContentLoaded', () => {
             initThreeJS();
             initGSAP();
+            initFormLogic();
+            initFlipLogic();
         });
     </script>
 </body>
